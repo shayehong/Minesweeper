@@ -52,7 +52,17 @@ public void draw ()
 public boolean isWon()
 {
     //your code here
-    return false;
+  for(int r = 0; r<NUM_ROWS;r++)
+  {
+    for(int c = 0; c< NUM_COLS; c++)
+    {
+        if(buttons[r,c].isClicked() == true && !bombs[r,c].isMarked == false)
+        {
+            return false;
+        }
+    }
+  }
+  return true;
 }
 public void displayLosingMessage()
 {
@@ -101,22 +111,23 @@ public class MSButton
         }
         else if (bombs.contains(this))
         {
-                displayLosingMessage();   
+            displayLosingMessage();   
         } 
         else if(countBombs(r,c)>0)
         {
-        setLabel(""+countBombs(r,c));
+            setLabel(""+countBombs(r,c));
         }
+        
         else 
         {
-           if(isValid(r,c-1) == true && buttons[r][c-1].isClicked()==false)
-           {
-            buttons[r][c-1].mousePressed();
-            }
-
            if(isValid(r,c+1) == true && buttons[r][c+1].isClicked()==false)
            {
             buttons[r][c+1].mousePressed();
+            }
+            
+            if(isValid(r,c-1) == true && buttons[r][c-1].isClicked()==false)
+           {
+            buttons[r][c-1].mousePressed();
             }
 
             if(isValid(r-1,c) == true && buttons[r-1][c].isClicked()==false)
@@ -156,7 +167,7 @@ public class MSButton
     {    
         if (marked)
             fill(0);
-         else if( clicked && bombs.contains(this) ) 
+        else if( clicked && bombs.contains(this) ) 
              fill(255,0,0);
         else if(clicked)
             fill( 200 );
@@ -174,7 +185,7 @@ public class MSButton
     public boolean isValid(int r, int c)
     {
         //your code here
-        if(r<=NUM_ROWS && c<=NUM_COLS && r>= 0 && c>=0)
+        if(r<NUM_ROWS && c<NUM_COLS && r>= 0 && c>=0)
         {
             return true;
         }
