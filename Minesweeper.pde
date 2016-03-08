@@ -2,9 +2,10 @@ import de.bezier.guido.*;
 //Declare and initialize NUM_ROWS and NUM_COLS = 20
 public final static int NUM_ROWS = 20;
 public final static int NUM_COLS = 20;
-public final static int NUM_MINES = 8;
+public final static int NUM_MINES = 10;
 private MSButton[][] buttons; //2d array of minesweeper buttons
 private ArrayList <MSButton> bombs = new ArrayList<MSButton>(); //ArrayList of just the minesweeper buttons that are mined
+boolean gameOver = false;
 //bombs = new ArrayList<MSButtons>();
 //List<String> myList = new ArrayList<String>();
 void setup ()
@@ -56,7 +57,7 @@ public boolean isWon()
   {
     for(int c = 0; c< NUM_COLS; c++)
     {
-        if(buttons[r,c].isClicked() == true && !bombs[r,c].isMarked == false)
+        if(bombs.contains(buttons[r][c]) && !buttons[r][c].isMarked())
         {
             return false;
         }
@@ -67,10 +68,31 @@ public boolean isWon()
 public void displayLosingMessage()
 {
     //your code here
+    if(isWon() == false)
+    {
+        buttons[10][1].setLabel("Y");
+        buttons[10][2].setLabel("O");
+        buttons[10][3].setLabel("U");
+        buttons[10][4].setLabel(" ");
+        buttons[10][5].setLabel("L");
+        buttons[10][6].setLabel("O");
+        buttons[10][7].setLabel("S");
+        buttons[10][8].setLabel("T");
+    }
 }
 public void displayWinningMessage()
 {
     //your code here
+    if(isWon() == true)
+    {
+        buttons[10][2].setLabel("Y");
+        buttons[10][3].setLabel("O");
+        buttons[10][4].setLabel("U");
+        buttons[10][5].setLabel(" ");
+        buttons[10][6].setLabel("W");
+        buttons[10][7].setLabel("I");
+        buttons[10][8].setLabel("N");
+    }
 }
 
 public class MSButton
@@ -104,6 +126,10 @@ public class MSButton
     
     public void mousePressed () 
     {
+        if(gameOver = true)
+        {
+            return;
+        }
         clicked = true;
         if(keyPressed == true)
         {
@@ -111,7 +137,9 @@ public class MSButton
         }
         else if (bombs.contains(this))
         {
-            displayLosingMessage();   
+            displayLosingMessage();
+            gameOver = true;
+
         } 
         else if(countBombs(r,c)>0)
         {
@@ -185,7 +213,7 @@ public class MSButton
     public boolean isValid(int r, int c)
     {
         //your code here
-        if(r<NUM_ROWS && c<NUM_COLS && r>= 0 && c>=0)
+        if(r<NUM_ROWS && c<NUM_COLS && r>=0 && c>=0)
         {
             return true;
         }
